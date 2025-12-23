@@ -22,7 +22,7 @@ body {
   color: white;
 }
 
-/* subtle glow snow */
+/* subtle texture */
 body::before {
   content: "";
   position: absolute;
@@ -45,6 +45,7 @@ body::before {
   padding: 20px;
   display: flex;
   flex-direction: column;
+  z-index: 2;
 }
 
 .title {
@@ -65,7 +66,6 @@ body::before {
   line-height: 1.6;
 }
 
-/* scrollbar styling */
 .letter::-webkit-scrollbar {
   width: 6px;
 }
@@ -102,6 +102,24 @@ button {
 button:hover {
   transform: scale(1.03);
 }
+
+/* snowflakes */
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: white;
+  font-size: 14px;
+  opacity: 0.8;
+  pointer-events: none;
+  animation-name: fall;
+  animation-timing-function: linear;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
 </style>
 </head>
 
@@ -111,20 +129,15 @@ button:hover {
   <div class="title">🎄 A Christmas Letter</div>
 
   <div class="letter" id="letter">
-    <!-- YOU WILL REPLACE THIS TEXT LATER -->
+    <!-- REPLACE THIS TEXT LATER -->
     <p>
       Dear You,<br><br>
-      This is where your letter goes.  
-      You can write as much as you want here.
+      This is where your letter goes.
+      Write everything you feel here.
     </p>
 
     <p>
-      The important part is that whoever is reading
-      has to scroll all the way down to continue.
-    </p>
-
-    <p>
-      Take your time. Read every word.
+      Take your time reading.
       Some things are meant to be felt slowly.
     </p>
 
@@ -146,6 +159,7 @@ button:hover {
 </div>
 
 <script>
+/* scroll-to-reveal */
 const letter = document.getElementById("letter");
 const reveal = document.getElementById("reveal");
 
@@ -157,7 +171,16 @@ letter.addEventListener("scroll", () => {
     reveal.classList.add("show");
   }
 });
-</script>
 
-</body>
-</html>
+/* snow effect */
+const MAX_SNOWFLAKES = 40;
+let snowflakes = 0;
+
+function createSnowflake() {
+  if (snowflakes >= MAX_SNOWFLAKES) return;
+
+  const snowflake = document.createElement("div");
+  snowflake.className = "snowflake";
+  snowflake.innerHTML = "❄";
+
+  snowflake.style.left = Math.random() * window.innerWidth + "px";

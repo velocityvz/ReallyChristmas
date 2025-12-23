@@ -25,11 +25,30 @@ body {
 /* subtle texture */
 body::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: url("https://grainy-gradients.vercel.app/noise.svg");
   opacity: 0.08;
   pointer-events: none;
+  z-index: 0;
+}
+
+/* snowflakes */
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: white;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1; /* ABOVE background */
+  animation-name: fall;
+  animation-timing-function: linear;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
 }
 
 /* glass card */
@@ -45,7 +64,7 @@ body::before {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  z-index: 2;
+  z-index: 2; /* ABOVE snow */
 }
 
 .title {
@@ -102,24 +121,6 @@ button {
 button:hover {
   transform: scale(1.03);
 }
-
-/* snowflakes */
-.snowflake {
-  position: fixed;
-  top: -10px;
-  color: white;
-  font-size: 14px;
-  opacity: 0.8;
-  pointer-events: none;
-  animation-name: fall;
-  animation-timing-function: linear;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh);
-  }
-}
 </style>
 </head>
 
@@ -145,7 +146,7 @@ button:hover {
       Almost there…
     </p>
 
-    <p style="margin-bottom: 200px;">
+    <p style="margin-bottom: 250px;">
       Keep going 💙
     </p>
   </div>
@@ -159,21 +160,21 @@ button:hover {
 </div>
 
 <script>
-/* scroll-to-reveal */
+/* SCROLL-TO-REVEAL (FIXED) */
 const letter = document.getElementById("letter");
 const reveal = document.getElementById("reveal");
 
 letter.addEventListener("scroll", () => {
-  const atBottom =
-    letter.scrollTop + letter.clientHeight >= letter.scrollHeight - 5;
+  const scrollBottom =
+    letter.scrollHeight - letter.scrollTop - letter.clientHeight;
 
-  if (atBottom) {
+  if (scrollBottom <= 10) {
     reveal.classList.add("show");
   }
 });
 
-/* snow effect */
-const MAX_SNOWFLAKES = 40;
+/* SNOW EFFECT (VISIBLE + CAPPED) */
+const MAX_SNOWFLAKES = 45;
 let snowflakes = 0;
 
 function createSnowflake() {
@@ -181,6 +182,24 @@ function createSnowflake() {
 
   const snowflake = document.createElement("div");
   snowflake.className = "snowflake";
-  snowflake.innerHTML = "❄";
+  snowflake.textContent = "❄";
 
   snowflake.style.left = Math.random() * window.innerWidth + "px";
+  snowflake.style.fontSize = Math.random() * 10 + 12 + "px";
+  snowflake.style.opacity = Math.random() * 0.6 + 0.3;
+  snowflake.style.animationDuration = Math.random() * 5 + 6 + "s";
+
+  document.body.appendChild(snowflake);
+  snowflakes++;
+
+  snowflake.addEventListener("animationend", () => {
+    snowflake.remove();
+    snowflakes--;
+  });
+}
+
+setInterval(createSnowflake, 250);
+</script>
+
+</body>
+</html>

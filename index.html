@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at top, #1a2a3a, #0b0f14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: white;
+}
+
+/* subtle glow snow */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* glass card */
+.card {
+  width: 90%;
+  max-width: 420px;
+  height: 520px;
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 0 40px rgba(0,0,0,0.6);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #e8faff;
+}
+
+/* letter area */
+.letter {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.1);
+  line-height: 1.6;
+}
+
+/* scrollbar styling */
+.letter::-webkit-scrollbar {
+  width: 6px;
+}
+.letter::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.25);
+  border-radius: 10px;
+}
+
+/* reveal section */
+.reveal {
+  margin-top: 15px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  text-align: center;
+}
+
+.reveal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+button {
+  background: linear-gradient(135deg, #ff4d4d, #2ecc71);
+  border: none;
+  border-radius: 999px;
+  padding: 12px 24px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255,77,77,0.4);
+}
+
+button:hover {
+  transform: scale(1.03);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="title">🎄 A Christmas Letter</div>
+
+  <div class="letter" id="letter">
+    <!-- YOU WILL REPLACE THIS TEXT LATER -->
+    <p>
+      Dear You,<br><br>
+      This is where your letter goes.  
+      You can write as much as you want here.
+    </p>
+
+    <p>
+      The important part is that whoever is reading
+      has to scroll all the way down to continue.
+    </p>
+
+    <p>
+      Take your time. Read every word.
+      Some things are meant to be felt slowly.
+    </p>
+
+    <p>
+      Almost there…
+    </p>
+
+    <p style="margin-bottom: 200px;">
+      Keep going 💙
+    </p>
+  </div>
+
+  <div class="reveal" id="reveal">
+    <p>✨ You made it to the end ✨</p>
+    <button onclick="alert('REVEAL GOES HERE')">
+      Reveal 🎁
+    </button>
+  </div>
+</div>
+
+<script>
+const letter = document.getElementById("letter");
+const reveal = document.getElementById("reveal");
+
+letter.addEventListener("scroll", () => {
+  const atBottom =
+    letter.scrollTop + letter.clientHeight >= letter.scrollHeight - 5;
+
+  if (atBottom) {
+    reveal.classList.add("show");
+  }
+});
+</script>
+
+</body>
+</html>
